@@ -6,3 +6,8 @@ class DomainBaseModel(BaseModel):
     type: str
     forward_available: bool
     forward_max_seconds: int
+
+
+class CreateEmailResponseBaseModel(BaseModel):
+    email: str
+    token: str

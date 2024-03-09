@@ -1,7 +1,7 @@
 import aiohttp
 
 from typing import List, Optional
-from models import DomainBaseModel
+from models import DomainBaseModel, CreateEmailResponseBaseModel
 
 
 class Client:
@@ -15,12 +15,15 @@ class Client:
     async def get_domains(self) -> List[DomainBaseModel]:
         async with self.__session.get("/api/v3/domains") as response:
             response_json = await response.json()
-            await self.__session.close()
             return [DomainBaseModel.model_validate(domain) for domain in response_json['domains']]
     
     async def create_email(self,
-                           alias: Optional[str],
-                           domain: Optional[DomainBaseModel.name],
-                           token: Optional[str]
-                           ):
-        pass
+                           alias: Optional[str] = None,
+                           domain: Optional[str] = None
+                           ) -> CreateEmailResponseBaseModel:
+        async with self.__session.post("/api/v3/email/new",
+                                       data={'name': alias,
+                                             'domain': domain}) as response:
+            response_json = await response.json()
+            return CreateEmailResponseBaseModel.model_validate(response_json)
+
