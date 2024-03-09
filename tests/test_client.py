@@ -2,10 +2,12 @@ import asyncio
 from tempmail import Client
 
 
-async def test_client() -> None:
+async def main() -> None:
     client = Client()
-    await client.get_domains()
+    domains = await client.get_domains()
+    email = await client.create_email(domain=domains[0].name)
+    print(email)
 
 
 if __name__ == "__main__":
-    asyncio.run(test_client())
+    asyncio.run(main())
