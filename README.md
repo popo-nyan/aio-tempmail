@@ -1,0 +1,2 @@
+# aio-tempmail
+いつかセッションcloseさせる

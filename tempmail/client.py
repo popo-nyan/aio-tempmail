@@ -1,9 +1,8 @@
-import asyncio
-
 import aiohttp
+
 from types import TracebackType
 from typing import List, Optional, Type
-from .models import DomainBaseModel, CreateEmailResponseBaseModel
+from .models import DomainBaseModel, CreateEmailResponseBaseModel, MessageBaseModel
 
 
 class Client:
@@ -53,3 +52,11 @@ class Client:
                 return True
             else:
                 return False
+    
+    async def get_messages(self,
+                           email: str) -> Optional[List[MessageBaseModel]]:
+        async with self._client.get(f"/api/v3/email/{email}/messages") as response:
+            response_json = await response.json()
+            if len(response_json) == 0:
+                return None
+            return [MessageBaseModel.model_validate(message) for message in response_json]
