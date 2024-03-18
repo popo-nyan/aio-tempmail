@@ -7,9 +7,13 @@ async def main() -> None:
     domains = await client.get_domains()
     email = await client.create_email(domain=domains[0].name)
     print(email.email, email.token)
-    messages = await client.get_messages(email.email)
+    while True:
+        messages = await client.get_messages(email.email)
+        if messages is not None:
+            break
     for message in messages:
         print(message.from_email, message.body_text)
+    await client.close()
 
 
 if __name__ == '__main__':

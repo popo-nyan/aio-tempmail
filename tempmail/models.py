@@ -1,26 +1,29 @@
-from pydantic import BaseModel, Field
-from typing import Any, List, Optional
+from typing import Any, Optional
+from dataclasses import dataclass
 
 
-class DomainBaseModel(BaseModel):
+@dataclass
+class Domain:
     name: str
     type: str
-    forward_available: bool
-    forward_max_seconds: int
+    forward_available: str
+    forward_max_seconds: str
 
 
-class CreateEmailResponseBaseModel(BaseModel):
+@dataclass
+class CreateEmail:
     email: str
     token: str
 
 
-class MessageBaseModel(BaseModel):
-    attachments: Optional[List[Any]]
+@dataclass
+class Message:
+    attachments: Optional[list[Any]]
     body_html: Optional[str]
     body_text: Optional[str]
     cc: Optional[str]
     created_at: str
-    from_email: Optional[str] = Field(..., alias="from")
+    from_email: Optional[str]
     id: str
     subject: Optional[str]
     to: Optional[str]
