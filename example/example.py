@@ -12,7 +12,7 @@ async def main() -> None:
         if messages is not None:
             break
     for message in messages:
-        print(message.from_email, message.body_text)
+        print(message.email_from, message.body_text)
     await client.close()
 
 

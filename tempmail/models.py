@@ -1,9 +1,8 @@
-from typing import Any, Optional
 from dataclasses import dataclass
 
 
 @dataclass
-class Domain:
+class DomainModel:
     name: str
     type: str
     forward_available: str
@@ -11,19 +10,19 @@ class Domain:
 
 
 @dataclass
-class CreateEmail:
+class CreateEmailResponseModel:
     email: str
     token: str
 
 
 @dataclass
-class Message:
-    attachments: Optional[list[Any]]
-    body_html: Optional[str]
-    body_text: Optional[str]
-    cc: Optional[str]
+class MessageResponseModel:
+    attachments: list | None
+    body_html: str | None
+    body_text: str | None
+    cc: str | None
     created_at: str
-    from_email: Optional[str]
+    email_from: str | None
     id: str
-    subject: Optional[str]
-    to: Optional[str]
+    subject: str | None
+    email_to: str | None

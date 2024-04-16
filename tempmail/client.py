@@ -1,7 +1,6 @@
 import aiohttp
 
-from typing import List, Optional
-from .models import CreateEmail, Domain, Message
+from .models import CreateEmailResponseModel, DomainModel, MessageResponseModel
 
 
 class Client:
@@ -23,20 +22,20 @@ class Client:
         await self.close()
         return None
     
-    async def get_domains(self) -> List[Domain]:
+    async def get_domains(self) -> list[DomainModel]:
         async with self._session.get("/api/v3/domains") as response:
             response_json = await response.json()
-            return [Domain(domain['name'], domain['type'], domain['forward_available'], domain['forward_max_seconds']) for domain in response_json['domains']]
+            return [DomainModel(domain['name'], domain['type'], domain['forward_available'], domain['forward_max_seconds']) for domain in response_json['domains']]
     
     async def create_email(self,
-                           alias: Optional[str] = None,
-                           domain: Optional[str] = None
-                           ) -> CreateEmail:
+                           alias: str | None = None,
+                           domain: str | None = None
+                           ) -> CreateEmailResponseModel:
         async with self._session.post("/api/v3/email/new",
                                       data={'name': alias,
                                             'domain': domain}) as response:
             response_json = await response.json()
-            return CreateEmail(response_json['email'], response_json['token'])
+            return CreateEmailResponseModel(response_json['email'], response_json['token'])
     
     async def delete_email(self,
                            email: str,
@@ -49,9 +48,9 @@ class Client:
                 return False
     
     async def get_messages(self,
-                           email: str) -> Optional[List[Message]]:
+                           email: str) -> list[MessageResponseModel] | None:
         async with self._session.get(f"/api/v3/email/{email}/messages") as response:
             response_json = await response.json()
             if len(response_json) == 0:
                 return None
-            return [Message(message['attachments'], message['body_html'], message['body_text'], message['cc'], message['created_at'], message['from'], message['id'], message['subject'], message['to']) for message in response_json]
+            return [MessageResponseModel(message['attachments'], message['body_html'], message['body_text'], message['cc'], message['created_at'], message['from'], message['id'], message['subject'], message['to']) for message in response_json]
