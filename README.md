@@ -25,7 +25,6 @@ if __name__ == '__main__':
     asyncio.run(main())
 
 ```
-:::note warn
-
+> [!NOTE]
 Be sure to put `await client.close()` at the end.
 :::
