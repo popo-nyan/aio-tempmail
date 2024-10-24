@@ -1,5 +1,4 @@
 from dataclasses import dataclass
-from typing import Optional
 
 
 @dataclass(slots=True)
@@ -12,18 +11,18 @@ class DomainModel:
 
 @dataclass(slots=True)
 class CreateEmailResponseModel:
-    email: str
+    address: str
     token: str
 
 
 @dataclass(slots=True)
 class MessageResponseModel:
     id: str
-    subject: Optional[str]
-    cc: Optional[str]
-    body_html: Optional[str]
-    body_text: Optional[str]
-    attachments: Optional[str]
+    subject: str | None
+    cc: str | None
+    body_html: str | None
+    body_text: str | None
+    attachments: str | None
     created_at: str
-    email_from: Optional[str]
-    email_to: Optional[str]
+    email_from: str | None
+    email_to: str | None
